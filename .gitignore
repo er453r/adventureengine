@@ -1,3 +1,5 @@
 *.iml
 *.js
 *.map
+*.log
+*.pdf
