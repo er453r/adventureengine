@@ -1,6 +1,7 @@
 package com.er453r.adventureengine;
 
-class Test{
+@script("test.md")
+class Test extends Adventure{
 	public static function main(){
 		trace("ADventure Engine test Start");
 	}
