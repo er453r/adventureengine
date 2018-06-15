@@ -7,13 +7,13 @@ See [my website][].
 
 ## Characters
 
-### Derp King
+- ### Derp King
 
-He is fat.
+    He is fat.
 
-### Blorp
+- ### Blorp
 
-He is lolz
+    He is lolz
 
 ## Story
 

@@ -8,8 +8,13 @@ import haxe.macro.Expr;
 import sys.io.File;
 
 class AdventureBuilder {
-    private static inline var SCRIPT_ANNOTATION:String = "script";
-    private static inline var CONTENTS:String = "contents";
+    private static inline var SCRIPT_ANNOTATION = "script";
+    private static inline var CONTENTS = "contents";
+
+    private static inline var TITLE_REGEX = "^# (.+)";
+    private static inline var SECTION_REGEX = "^## (.+)";
+    private static inline var CHARACTER_REGEX = "### (.+)";
+    private static inline var EMPTY_REGEX = "^[ \\s\\t]*$";
 
     public static function build():Array<Field> {
         var fields:Array<Field> = Context.getBuildFields();
@@ -25,7 +30,44 @@ class AdventureBuilder {
 
         var content = File.getContent(Context.resolvePath(file));
 
-        trace('Script: $content');
+        //trace('Script: $content');
+
+        var lines = content.split("\n");
+
+        trace('Have ${lines.length} lines');
+
+        for(n in 0...lines.length){
+            var regex = new EReg(TITLE_REGEX, "");
+
+            if(regex.match(lines[n])){
+                trace('Title: ${regex.matched(1)}');
+
+                continue;
+            }
+
+            regex = new EReg(SECTION_REGEX, "");
+
+            if(regex.match(lines[n])){
+                trace('Section: ${regex.matched(1)}');
+
+                continue;
+            }
+
+            regex = new EReg(CHARACTER_REGEX, "");
+
+            if(regex.match(lines[n])){
+                trace('Sub-section: ${regex.matched(1)}');
+
+                continue;
+            }
+
+            regex = new EReg(EMPTY_REGEX, "");
+
+            if(regex.match(lines[n])) // do nothing on empty
+                continue;
+
+            trace('Content: ${lines[n]}');
+        }
 
         return fields;
     }
