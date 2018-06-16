@@ -7,6 +7,8 @@ import haxe.macro.Expr;
 
 import sys.io.File;
 
+using hx.strings.Strings; // augment all Strings with new functions
+
 class AdventureBuilder {
     private static inline var SCRIPT_ANNOTATION = "script";
     private static inline var CONTENTS = "contents";
@@ -56,7 +58,16 @@ class AdventureBuilder {
             regex = new EReg(CHARACTER_REGEX, "");
 
             if(regex.match(lines[n])){
-                trace('Sub-section: ${regex.matched(1)}');
+                var name = regex.matched(1);
+
+                trace('Sub-section: ${name}');
+
+                fields.push({
+                    name: name.toUpperCamel(),
+                    access: [Access.APublic, Access.AStatic],
+                    kind: FieldType.FVar(macro:Float, macro $v{1.5}),
+                    pos: Context.currentPos()
+                });
 
                 continue;
             }

@@ -1,4 +1,5 @@
 #!/usr/bin/haxe
 -cp src
 -main com.er453r.adventureengine.Test
+-lib haxe-strings
 -js adventureengine.js
