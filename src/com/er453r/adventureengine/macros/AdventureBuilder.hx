@@ -65,7 +65,7 @@ class AdventureBuilder {
                 fields.push({
                     name: name.toUpperCamel(),
                     access: [Access.APublic, Access.AStatic],
-                    kind: FieldType.FVar(macro:Float, macro $v{1.5}),
+                    kind: FieldType.FVar(macro:Character, macro new Character($v{name}, $v{regex.matchedRight()})),
                     pos: Context.currentPos()
                 });
 
