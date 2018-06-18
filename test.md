@@ -21,11 +21,13 @@ See [my website][].
 
 > #### The question
 
-> [[Derp King]] Hey, man what is 2 + 2?  
-> [[Blorp]] 6  
->> [[Derp King]] Pffff... no. ([The question])
+_Two omnious figures approach each other_
+
+> [[Derp King]] Hey, man what is 2 + 2?  *He asked politely*
+>> [[Blorp]] 6 (lie)   
+   [[Derp King]] Pffff... no. *he responds without emotion* ([The question])
  
-> [[Blorp]] 4  
->> [[Derp King]] Correctomundo!
+>> [[Blorp]] 4  
+   [[Derp King]] Correctomundo!
 
 ## The end
