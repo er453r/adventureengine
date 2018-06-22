@@ -1,11 +1,12 @@
 #!/usr/bin/haxe
 -cp src
 -cp test
+-cp res/test
 
 -main com.er453r.adventureengine.Test
 
 -lib haxe-strings
 -js build/adventureengine.js
 
--cmd pandoc -f markdown-blank_before_blockquote test/script-test.md -o build/script-test.htm
--cmd pandoc -f markdown-blank_before_blockquote test/script-test.md -o build/script-test.pdf
+-cmd pandoc -f markdown-blank_before_blockquote res/test/test-script.md -o build/test-script.htm
+-cmd pandoc -f markdown-blank_before_blockquote res/test/test-script.md -o build/test-script.pdf
