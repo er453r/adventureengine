@@ -1,8 +1,0 @@
-#!/usr/bin/haxe
--cp src
--cp test
-
--main com.er453r.adventureengine.Test
-
--lib haxe-strings
--js build/adventureengine.js
