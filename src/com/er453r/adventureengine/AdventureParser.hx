@@ -6,6 +6,7 @@ class AdventureParser {
     private static inline var CHARACTER_REGEX = "### (.+)";
     private static inline var EMPTY_REGEX = "^[ \\s\\t]*$";
 
+    public var title:String;
     public var characters:Array<Character> = [];
 
     public function new(script:String){
@@ -17,7 +18,9 @@ class AdventureParser {
             var regex = new EReg(TITLE_REGEX, "");
 
             if(regex.match(lines[n])){
-                trace('Title: ${regex.matched(1)}');
+                title = regex.matched(1);
+
+                trace('Title: $title');
 
                 continue;
             }
@@ -49,5 +52,11 @@ class AdventureParser {
 
             trace('Content: ${lines[n]}');
         }
+
+        trace(this);
+    }
+
+    public function toString():String{
+        return '$title - a tale of ${characters.length} characters';
     }
 }
