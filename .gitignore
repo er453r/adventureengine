@@ -1,6 +1,2 @@
 *.iml
-*.js
-*.map
-*.log
-*.pdf
-*.htm
+build
