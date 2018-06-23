@@ -1,10 +1,10 @@
 package com.er453r.adventureengine;
 
 class AdventureParser {
-    private static inline var TITLE_REGEX = "^# (.+)";
-    private static inline var SECTION_REGEX = "^## (.+)";
-    private static inline var CHARACTER_REGEX = "### (.+)";
-    private static inline var EMPTY_REGEX = "^[ \\s\\t]*$";
+    private var titleRegex = ~/^# (.+)/;
+    private var sectionRegex = ~/^## (.+)/;
+    private var characterRegex = ~/### (.+)/;
+    private var emptyRegex = ~/^[ \s\t]*$/;
 
     public var title:String;
     public var characters:Array<Character> = [];
@@ -15,39 +15,31 @@ class AdventureParser {
         trace('Have ${lines.length} lines');
 
         for(n in 0...lines.length){
-            var regex = new EReg(TITLE_REGEX, "");
-
-            if(regex.match(lines[n])){
-                title = regex.matched(1);
+            if(titleRegex.match(lines[n])){
+                title = titleRegex.matched(1);
 
                 trace('Title: $title');
 
                 continue;
             }
 
-            regex = new EReg(SECTION_REGEX, "");
-
-            if(regex.match(lines[n])){
-                trace('Section: ${regex.matched(1)}');
+            if(sectionRegex.match(lines[n])){
+                trace('Section: ${sectionRegex.matched(1)}');
 
                 continue;
             }
 
-            regex = new EReg(CHARACTER_REGEX, "");
-
-            if(regex.match(lines[n])){
-                var name = regex.matched(1);
+            if(characterRegex.match(lines[n])){
+                var name = characterRegex.matched(1);
 
                 trace('Sub-section: ${name}');
 
-                characters.push(new Character(name, regex.matchedRight()));
+                characters.push(new Character(name, characterRegex.matchedRight()));
 
                 continue;
             }
 
-            regex = new EReg(EMPTY_REGEX, "");
-
-            if(regex.match(lines[n])) // do nothing on empty
+            if(emptyRegex.match(lines[n])) // do nothing on empty
                 continue;
 
             trace('Content: ${lines[n]}');
