@@ -19,15 +19,17 @@ See [my website][].
 
 ### Act 1
 
-> #### The question
+#### The question
 
 _Two omnious figures approach each other_
 
-> [[Derp King]] Hey, man what is 2 + 2?  *He asked politely*
->> [[Blorp]] 6 (lie)   
-   [[Derp King]] Pffff... no. *he responds without emotion* ([The question])
+[Derp King] Hey, man what is 2 + 2?  *He asked politely*
+> [Blorp] 6 (lie)   
+  [Derp King] Pffff... no. *he responds without emotion* ([The question])
  
->> [[Blorp]] 4  
-   [[Derp King]] Correctomundo!
+> [Blorp] 4  
+  [Derp King] Correctomundo!
+
+_Fade to black._
 
 ## The end
