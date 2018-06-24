@@ -32,10 +32,10 @@ _Two omnious figures approach each other_
 >> [Blorp] Yup. (lie)  
    [Derp King] Wrong again.  
    [Blorp] Impossibru! ([The question])  
-  
+>
 >> [Blorp] 3?  
    [Derp King] Damn, you are stupid. ([The question])  
-   
+>   
 > [Blorp] 4  
   [Derp King] Correctomundo!  
 
