@@ -14,6 +14,6 @@ class StoryNode {
     }
 
     public function toString(){
-        trace('[StoryNode] $content');
+        return '[StoryNode] $content';
     }
 }

@@ -1,5 +1,7 @@
 package com.er453r.adventureengine;
 
+import haxe.ds.StringMap;
+
 class AdventureParser {
     private static inline var CHARACTERS_SECTION = "Characters";
     private static inline var STORY_SECTION = "Story";
@@ -8,11 +10,13 @@ class AdventureParser {
     private var sectionRegex = ~/^## (.+)/; // this matches sections as "Characters", "Story", "The end"
     private var subSectionRegex = ~/### (.+)/; // this matches sub-sections as characters, chapters
     private var emptyRegex = ~/^[ \s\t]*$/; // matches empty lines
+    private var indentRegex = ~/^(>+) (.+)$/; // match indents
 
     private var currentlyParsing:ScriptPart = ScriptPart.OTHER;
+    private var currentIndentLevel:Int = 0;
 
     public var title:String;
-    public var characters:Array<Character> = [];
+    public var characters:StringMap<Character> = new StringMap<Character>();
     public var story:StoryNode = new StoryNode("");
 
     public function new(script:String){
@@ -57,7 +61,7 @@ class AdventureParser {
                 trace('Sub-section: ${name}');
 
                 if(currentlyParsing == ScriptPart.CHARACTERS)
-                    characters.push(new Character(name, subSectionRegex.matchedRight()));
+                    characters.set(name, new Character(name, subSectionRegex.matchedRight()));
 
                 if(currentlyParsing == ScriptPart.STORY){
                     var newStoryNode:StoryNode = new StoryNode(line);
@@ -74,11 +78,25 @@ class AdventureParser {
                 continue;
 
             if(currentlyParsing == ScriptPart.STORY){
+                if(indentRegex.match(line)){
+                    var indentDiff = indentRegex.matched(1).length - currentIndentLevel;
+
+                    if(indentDiff == 1 || indentDiff == -1){
+                        currentIndentLevel += indentDiff;
+
+                        trace('Changing INDENT level to $currentIndentLevel');
+                    }
+                    else if(indentDiff != 0)
+                        throw 'INDENT diff other than -1,0,+1';
+                }
+
                 var newStoryNode:StoryNode = new StoryNode(line);
 
                 story.add(newStoryNode);
 
                 story = newStoryNode;
+
+                trace(story);
 
                 continue;
             }
@@ -90,6 +108,6 @@ class AdventureParser {
     }
 
     public function toString():String{
-        return '$title - a tale of ${characters.length} characters';
+        return '$title - a tale of ${Lambda.count(characters)} characters';
     }
 }
