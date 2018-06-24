@@ -23,12 +23,24 @@ See [my website][].
 
 _Two omnious figures approach each other_
 
-[Derp King] Hey, man what is 2 + 2?  *He asked politely*
+[Blorp] Yo, wassup?  
+[Derp King] Nothing. Watching a game, having a bud...  
+[Blorp] True, true.  
+[Derp King] Hey, man what is 2 + 2?  *He asked politely*  
 > [Blorp] 6 (lie)   
-  [Derp King] Pffff... no. *he responds without emotion* ([The question])
- 
+  [Derp King] Pffff... I don't think so. Are you sure? *derps quietly*
+>> [Blorp] Yup. (lie)  
+   [Derp King] Wrong again.  
+   [Blorp] Impossibru! ([The question])  
+  
+>> [Blorp] 3?  
+   [Derp King] Damn, you are stupid. ([The question])  
+   
 > [Blorp] 4  
-  [Derp King] Correctomundo!
+  [Derp King] Correctomundo!  
+
+[Blorp] Bye!  
+[Derp King] See you later.
 
 _Fade to black._
 

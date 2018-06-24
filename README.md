@@ -1,5 +1,12 @@
 # Adventure Engine
 
+A plot scripting format inspired by Ink and Kni
+
+## Design principles
+
+- New plot forks begin with non-zero multiples of `>`
+- Each plot branch should end with an empty line
+
 ## Requirements 
 
     apt install pandoc texlive-latex-base texlive-fonts-recommended
@@ -16,4 +23,3 @@ To use dense blockquotes
 ## Pandoc markdown
 
 https://pandoc.org/MANUAL.html#block-quotations
-
