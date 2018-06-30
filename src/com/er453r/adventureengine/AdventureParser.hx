@@ -14,10 +14,12 @@ class AdventureParser {
 
     private var currentlyParsing:ScriptPart = ScriptPart.OTHER;
     private var currentIndentLevel:Int = 0;
+    private var mayFork:Bool = false;
 
     public var title:String;
     public var characters:StringMap<Character> = new StringMap<Character>();
-    public var story:StoryNode = new StoryNode("");
+    public var story:StoryNode;
+    public var currentStoryNode:StoryNode;
 
     public function new(script:String){
         var lines = script.split("\n");
@@ -29,6 +31,8 @@ class AdventureParser {
 
             if(titleRegex.match(line)){
                 title = titleRegex.matched(1);
+
+                currentStoryNode = story = new StoryNode(title);
 
                 trace('Title: $title');
 
@@ -63,14 +67,6 @@ class AdventureParser {
                 if(currentlyParsing == ScriptPart.CHARACTERS)
                     characters.set(name, new Character(name, subSectionRegex.matchedRight()));
 
-                if(currentlyParsing == ScriptPart.STORY){
-                    var newStoryNode:StoryNode = new StoryNode(line);
-
-                    story.add(newStoryNode);
-
-                    story = newStoryNode;
-                }
-
                 continue;
             }
 
@@ -88,15 +84,26 @@ class AdventureParser {
                     }
                     else if(indentDiff != 0)
                         throw 'INDENT diff other than -1,0,+1';
+
+                    if(indentDiff == 1)
+                        currentStoryNode.fork = true;
+
+                    if(indentDiff == -1)
+                        currentStoryNode = currentStoryNode.getParent();
+
+                    line = indentRegex.matched(2);
                 }
 
-                var newStoryNode:StoryNode = new StoryNode(line);
+                if(emptyRegex.match(line)) // do nothing on empty
+                    continue;
 
-                story.add(newStoryNode);
+                var newStoryNode:StoryNode = new StoryNode(StringTools.ltrim(line));
 
-                story = newStoryNode;
+                currentStoryNode.add(newStoryNode);
 
-                trace(story);
+                currentStoryNode = newStoryNode;
+
+                trace(currentStoryNode);
 
                 continue;
             }
@@ -105,6 +112,10 @@ class AdventureParser {
         }
 
         trace(this);
+    }
+
+    public function dump(){
+        story.dump();
     }
 
     public function toString():String{

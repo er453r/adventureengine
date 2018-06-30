@@ -28,6 +28,8 @@ class AdventureBuilder {
 
         var adventure:AdventureParser = new AdventureParser(content);
 
+        adventure.dump();
+
         for(character in adventure.characters){
             fields.push({
                 name: character.name.toUpperCamel(),
