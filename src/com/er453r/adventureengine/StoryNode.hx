@@ -19,15 +19,17 @@ class StoryNode {
     }
 
     public function add(storyNode:StoryNode){
-        trace('adding to $content');
+        trace('Adding $storyNode to $this');
 
         storyNode.parent = fork ? this : this.parent;
+
+        trace('$storyNode parent set to ${storyNode.parent}');
 
         nodes.push(storyNode);
     }
 
     public function toString(){
-        return '[StoryNode] $content';
+        return '[StoryNode | $content]';
     }
 
     public function dump(indent:Int = 0, par:String = ""){
