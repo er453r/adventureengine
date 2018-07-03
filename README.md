@@ -9,7 +9,9 @@ A plot scripting format inspired by Ink and Kni
 
 ## Requirements 
 
-    apt install pandoc texlive-latex-base texlive-fonts-recommended
+    apt install pandoc texlive-latex-base texlive-fonts-recommended graphviz cpanminus
+    
+    cpanm Graph::Easy
   
 ## Script to PDF
 

@@ -28,7 +28,8 @@ class AdventureBuilder {
 
         var adventure:AdventureParser = new AdventureParser(content);
 
-        adventure.dump();
+        File.saveContent("test.dot", '\n${adventure.dot()}');
+        trace('\n${adventure.dot()}');
 
         for(character in adventure.characters){
             fields.push({

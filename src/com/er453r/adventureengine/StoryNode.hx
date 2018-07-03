@@ -3,28 +3,16 @@ package com.er453r.adventureengine;
 class StoryNode {
     private var nodes:Array<StoryNode> = [];
     private var content:String;
-    private var parent:StoryNode;
-
-    public var fork:Bool = false;
-    private var merge:Bool = false;
 
     public function new(content:String) {
         this.content = content;
     }
 
-    public function getParent():StoryNode {
-        trace('[$content] PARENT - $parent');
-
-        return parent;
+    public function size():Int{
+        return nodes.length;
     }
 
     public function add(storyNode:StoryNode){
-        trace('Adding $storyNode to $this');
-
-        storyNode.parent = fork ? this : this.parent;
-
-        trace('$storyNode parent set to ${storyNode.parent}');
-
         nodes.push(storyNode);
     }
 
@@ -40,7 +28,23 @@ class StoryNode {
         trace(prefix + content);
 
         for(node in nodes)
-            node.dump(indent + (fork ? 1 : 0), content);
+            node.dump(indent + (nodes.length > 1 ? 1 : 0), content);
+    }
+
+    public function dot(indent:Int = 0):String{
+        var string = "";
+        var prefix = "";
+
+        for(n in 0...indent)
+            prefix += "    ";
+
+        for(node in nodes){
+            string += '$prefix"$content" -> "${node.content}"\n';
+
+            string += node.dot(indent + 1);
+        }
+
+        return string;
     }
 
     public function toString(){

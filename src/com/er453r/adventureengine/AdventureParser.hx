@@ -10,16 +10,19 @@ class AdventureParser {
     private var sectionRegex = ~/^## (.+)/; // this matches sections as "Characters", "Story", "The end"
     private var subSectionRegex = ~/### (.+)/; // this matches sub-sections as characters, chapters
     private var emptyRegex = ~/^[ \s\t]*$/; // matches empty lines
-    private var indentRegex = ~/^(>*)\s*(.+)$/; // match indents
+    private var indentRegex = ~/^(>*)\s*(.*)$/; // match indents
 
     private var currentlyParsing:ScriptPart = ScriptPart.STORY; // parse story by default
     private var currentIndentLevel:Int = 0;
-    private var mayFork:Bool = false;
 
-    public var title:String;
+    private var title:String;
+
+    private var story:StoryNode;
+    private var currentStoryNode:StoryNode;
+    private var storyStack:Array<StoryNode> = [];
+    private var lastDecreaseIndex:UInt = 0;
+
     public var characters:StringMap<Character> = new StringMap<Character>();
-    public var story:StoryNode;
-    public var currentStoryNode:StoryNode;
 
     public function new(script:String){
         var lines = script.split("\n");
@@ -70,31 +73,44 @@ class AdventureParser {
                 continue;
             }
 
-            if(emptyRegex.match(line)) // do nothing on empty
-                continue;
-
             if(currentlyParsing == ScriptPart.STORY){
                 if(indentRegex.match(line)){
+                    trace('LINE $line');
+
                     var indentDiff = indentRegex.matched(1).length - currentIndentLevel;
 
-                    trace('indent $indentDiff');
-
-                    if(indentDiff == 1 || indentDiff == -1){
-                        currentIndentLevel += indentDiff;
-
-                        trace('Changing INDENT level to $currentIndentLevel');
-                    }
-                    else if(indentDiff != 0)
-                        throw 'INDENT diff other than -1,0,+1';
+                    trace('Indent diff $indentDiff');
 
                     if(indentDiff == 1){
-                        trace('$currentStoryNode is a fork');
+                        trace('Current stack fork is $currentStoryNode');
 
-                        currentStoryNode.fork = true;
+                        storyStack.push(currentStoryNode);
                     }
+                    else if(indentDiff == -1){
+                        lastDecreaseIndex = n;
+                    }
+                    else if(indentDiff == 0){
+                        if(lastDecreaseIndex == n - 1){ // no increase after a decrease  - this means an end of fork
+                            trace('Ending fork');
 
-                    if(indentDiff == -1)
-                        currentStoryNode = currentStoryNode.getParent();
+                            var stackTop:StoryNode = storyStack[storyStack.length - 1];
+
+                            trace(stackTop.size());
+
+                            if(stackTop.size() == 1)
+                                trace('[WARN] Ending a fork with 1 branch - unnessesary branching');
+                            else if(stackTop.size() < 1)
+                                throw 'Unexpected number of fork branches - ${stackTop.size()}}';
+
+                            storyStack.pop();
+                        }
+                    }
+                    else
+                        throw 'Indent diff ($indentDiff) other than -1,0,+1';
+
+                    currentIndentLevel += indentDiff;
+
+                    trace('Changing INDENT level to $currentIndentLevel');
 
                     line = indentRegex.matched(2);
                 }
@@ -126,6 +142,10 @@ class AdventureParser {
 
     public function dump(){
         story.dump();
+    }
+
+    public function dot():String{
+        return 'digraph $title {\n${story.dot(1)}}';
     }
 
     public function toString():String{
