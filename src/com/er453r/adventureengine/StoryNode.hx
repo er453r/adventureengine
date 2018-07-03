@@ -41,7 +41,7 @@ class StoryNode {
         for(node in nodes){
             string += '$prefix"$content" -> "${node.content}"\n';
 
-            string += node.dot(indent + 1);
+            string += node.dot(indent + (nodes.length > 1 ? 1 : 0));
         }
 
         return string;

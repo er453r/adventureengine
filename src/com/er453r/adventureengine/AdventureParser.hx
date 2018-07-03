@@ -87,22 +87,22 @@ class AdventureParser {
                         storyStack.push(currentStoryNode);
                     }
                     else if(indentDiff == -1){
+                        currentStoryNode = storyStack.pop();
+
+                        trace('Stack decrease, current is $currentStoryNode');
+
                         lastDecreaseIndex = n;
                     }
                     else if(indentDiff == 0){
                         if(lastDecreaseIndex == n - 1){ // no increase after a decrease  - this means an end of fork
-                            trace('Ending fork');
+                            trace('Ending fork $currentStoryNode');
 
-                            var stackTop:StoryNode = storyStack[storyStack.length - 1];
+                            // now every fork ending, should point to the next node
 
-                            trace(stackTop.size());
-
-                            if(stackTop.size() == 1)
+                            if(currentStoryNode.size() == 1)
                                 trace('[WARN] Ending a fork with 1 branch - unnessesary branching');
-                            else if(stackTop.size() < 1)
-                                throw 'Unexpected number of fork branches - ${stackTop.size()}}';
-
-                            storyStack.pop();
+                            else if(currentStoryNode.size() < 1)
+                                throw 'Unexpected number of fork branches - ${currentStoryNode.size()}}';
                         }
                     }
                     else
