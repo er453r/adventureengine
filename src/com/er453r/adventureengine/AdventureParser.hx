@@ -20,6 +20,7 @@ class AdventureParser {
     private var story:StoryNode;
     private var currentStoryNode:StoryNode;
     private var storyStack:Array<StoryNode> = [];
+    private var hangingForkNodes:Array<StoryNode> = [];
     private var lastDecreaseIndex:UInt = 0;
 
     public var characters:StringMap<Character> = new StringMap<Character>();
@@ -33,6 +34,8 @@ class AdventureParser {
             var line = lines[n];
 
             if(titleRegex.match(line)){
+                currentlyParsing = ScriptPart.OTHER;
+
                 title = titleRegex.matched(1);
 
                 currentStoryNode = story = new StoryNode(title);
@@ -74,6 +77,8 @@ class AdventureParser {
             }
 
             if(currentlyParsing == ScriptPart.STORY){
+                var shouldCollectHanging:Bool = false;
+
                 if(indentRegex.match(line)){
                     trace('LINE $line');
 
@@ -87,6 +92,8 @@ class AdventureParser {
                         storyStack.push(currentStoryNode);
                     }
                     else if(indentDiff == -1){
+                        hangingForkNodes.push(currentStoryNode); // rembeber fork end for the merge
+
                         currentStoryNode = storyStack.pop();
 
                         trace('Stack decrease, current is $currentStoryNode');
@@ -98,11 +105,12 @@ class AdventureParser {
                             trace('Ending fork $currentStoryNode');
 
                             // now every fork ending, should point to the next node
+                            shouldCollectHanging = true;
 
                             if(currentStoryNode.size() == 1)
                                 trace('[WARN] Ending a fork with 1 branch - unnessesary branching');
                             else if(currentStoryNode.size() < 1)
-                                throw 'Unexpected number of fork branches - ${currentStoryNode.size()}}';
+                                throw 'Unexpected number of fork branches - ${currentStoryNode.size()}';
                         }
                     }
                     else
@@ -120,11 +128,19 @@ class AdventureParser {
 
                 var newStoryNode:StoryNode = new StoryNode(StringTools.trim(line));
 
+                if(shouldCollectHanging){
+                    for(hangingNode in hangingForkNodes)
+                        hangingNode.add(newStoryNode);
+
+                    hangingForkNodes = [];
+                }
+
                 if(currentStoryNode == null){ // if nothing has begun yet
                     currentStoryNode = story = newStoryNode;
                 }
                 else{ // else append and save as current
-                    currentStoryNode.add(newStoryNode);
+                    if(!shouldCollectHanging)
+                        currentStoryNode.add(newStoryNode);
 
                     currentStoryNode = newStoryNode;
                 }
@@ -145,7 +161,7 @@ class AdventureParser {
     }
 
     public function dot():String{
-        return 'digraph $title {\n${story.dot(1)}}';
+        return 'digraph ${title == null ? 'Story' : title} {\n${story.dot(1)}}';
     }
 
     public function toString():String{

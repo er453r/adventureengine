@@ -39,12 +39,21 @@ class StoryNode {
             prefix += "    ";
 
         for(node in nodes){
-            string += '$prefix"$content" -> "${node.content}"\n';
+            string += '$prefix${escapeDotContent(content)} -> ${escapeDotContent(node.content)}\n';
 
             string += node.dot(indent + (nodes.length > 1 ? 1 : 0));
         }
 
         return string;
+    }
+
+    private var nonWordRegex = ~/[^\w]/; // match anything not word like
+
+    private function escapeDotContent(content:String):String{
+        if(nonWordRegex.match(content))
+            return '"$content"';
+        else
+            return content;
     }
 
     public function toString(){

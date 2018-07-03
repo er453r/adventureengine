@@ -11,3 +11,4 @@
 -cmd pandoc -f markdown-blank_before_blockquote res/test/test-script.md -o build/test-script.htm
 -cmd pandoc -f markdown-blank_before_blockquote res/test/test-script.md -o build/test-script.pdf
 -cmd graph-easy test.dot
+-cmd dot -Tpng test.dot > test.png
