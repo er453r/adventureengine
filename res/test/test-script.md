@@ -35,7 +35,7 @@ _Two omnious figures approach each other_
 >  
 >> [Blorp] 3?  
 >> [Derp King] Damn, you are stupid. ([The question])  
->   
+   
 > [Blorp] 4  
 > [Derp King] Correctomundo!  
 

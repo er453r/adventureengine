@@ -31,17 +31,24 @@ class StoryNode {
             node.dump(indent + (nodes.length > 1 ? 1 : 0), content);
     }
 
-    public function dot(indent:Int = 0):String{
+    public function dot(indent:Int = 0, visitedNodes:Array<StoryNode> = null):String{
         var string = "";
         var prefix = "";
 
         for(n in 0...indent)
             prefix += "    ";
 
-        for(node in nodes){
-            string += '$prefix${escapeDotContent(content)} -> ${escapeDotContent(node.content)}\n';
+        if(visitedNodes == null)
+            visitedNodes = [];
 
-            string += node.dot(indent + (nodes.length > 1 ? 1 : 0));
+        if(visitedNodes.indexOf(this) == -1){ // not visited
+            visitedNodes.push(this);
+
+            for(node in nodes){
+                string += '$prefix${escapeDotContent(content)} -> ${escapeDotContent(node.content)}\n';
+
+                string += node.dot(indent + (nodes.length > 1 ? 1 : 0), visitedNodes);
+            }
         }
 
         return string;

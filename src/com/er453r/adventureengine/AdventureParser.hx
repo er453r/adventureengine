@@ -91,10 +91,11 @@ class AdventureParser {
 
                         storyStack.push(currentStoryNode);
                     }
-                    else if(indentDiff == -1){
+                    else if(indentDiff < 0){
                         hangingForkNodes.push(currentStoryNode); // rembeber fork end for the merge
 
-                        currentStoryNode = storyStack.pop();
+                        for(i in indentDiff...0)
+                            currentStoryNode = storyStack.pop();
 
                         trace('Stack decrease, current is $currentStoryNode');
 
